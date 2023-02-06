@@ -6,7 +6,7 @@ metadata:
 spec:
   generators:
   - git:
-      repoURL: https://github.com/lostinopensrc/homelab-argocd-applicationset.git
+      repoURL: https://github.com/lamadome/homelab-argocd-applicationset
       revision: main
       files:
       - path: "tenants-discovery/tenants/**/config.json"
@@ -16,7 +16,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/lostinopensrc/homelab-argocd-applicationset.git
+        repoURL: https://github.com/lamadome/homelab-argocd-applicationset
         targetRevision: main
         path: 'tenants/{{path.basename}}'
         helm:
