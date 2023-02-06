@@ -1,4 +1,27 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- appse.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: homelab-tenants
+  namespace: argo-cd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/lamadome/homelab-argocd-applicationset
+        revision: main
+        files:
+          - path: "tenants-discovery/tenants/**/config.json"
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/lamadome/homelab-argocd-applicationset
+        targetRevision: main
+        path: 'tenants/{{path.basename}}'
+        helm:
+          valueFiles:
+            - '{{path.basename}}.yaml'
+      destination:
+        server: '{{cluster.address}}'
+        namespace: '{{cluster.namespace}}'
